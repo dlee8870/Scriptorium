@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import prisma from '@/utils/db';
+import { getJwtSecret } from '@/utils/serverEnv';
 
 interface LandingProps {
   firstname: string;
@@ -19,10 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (cookieToken) {
     try {
-      const decoded = jwt.verify(
-        cookieToken,
-        process.env.JWT_SECRET || 'development_secret'
-      ) as { userId: number };
+      const decoded = jwt.verify(cookieToken, getJwtSecret()) as { userId: number };
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
         select: { role: true },

@@ -4,38 +4,37 @@ import { hashPassword } from "@/utils/auth";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   if (req.method === "POST") {
-    const { firstName, lastName, email, password, avatar, phoneNumber } = req.body as {
+    const { firstName, lastName, email, password, phoneNumber } = req.body as {
       firstName: string;
       lastName: string;
       email: string;
       password: string;
-      avatar?: string;
       phoneNumber?: string;
     };
+    const normalizedEmail = email?.trim().toLowerCase();
 
     // Basic validations
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName?.trim() || !lastName?.trim() || !normalizedEmail || !password) {
       res.status(400).json({ message: "All required fields must be provided" });
       return;
     }
 
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(normalizedEmail)) {
       res.status(400).json({ message: "Invalid email format" });
       return;
     }
 
-    // Password strength validation (example: minimum 8 characters)
-    if (password.length < 4) {
-      res.status(400).json({ message: "Password must be at least 4 characters long" });
+    if (password.length < 8) {
+      res.status(400).json({ message: "Password must be at least 8 characters long" });
       return;
     }
 
     try {
       // Check if user with the email already exists
       const existingUser = await prisma.user.findUnique({
-        where: { email },
+        where: { email: normalizedEmail },
       });
 
       if (existingUser) {
@@ -46,11 +45,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Create the new user
       const newUser = await prisma.user.create({
         data: {
-          firstName,
-          lastName,
-          email,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: normalizedEmail,
           passwordHash: await hashPassword(password), // Updated to match schema
-          avatar,
           phoneNumber,
         },
       });
@@ -62,10 +60,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         message: "User created successfully",
         user: {
           id,
-          firstName,
-          lastName,
-          email,
-          avatar,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+          avatar: newUser.avatar,
           phoneNumber,
           createdAt,
           updatedAt,

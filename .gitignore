@@ -36,6 +36,8 @@ yarn-error.log*
 
 # local database and uploaded user content
 /prisma/dev.db
+/prisma/sqlite-export.json
+/generated/
 /public/uploads/*
 !/public/uploads/default.png
 

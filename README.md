@@ -1,40 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Scriptorium
 
-## Getting Started
+Scriptorium is a Next.js application for writing, executing, saving, and discussing code templates. Production uses a stateless web deployment, managed PostgreSQL, object storage, and an isolated Docker runner.
 
-First, run the development server:
+## Architecture
+
+- Next.js Pages Router on Vercel
+- Prisma with PostgreSQL through a Vercel Marketplace provider such as Neon
+- Vercel Blob for user avatars
+- A separate authenticated runner service for Docker code execution
+- Local Docker execution when `EXECUTION_API_URL` is not set
+
+## Local development
+
+Requirements: Node.js 20 or newer and Docker Desktop.
 
 ```bash
+cp .env.example .env
+npm ci
+npm run db:dev:up
+npm run db:deploy
+npm run db:seed
+bash runner/build-images.sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app runs at `http://localhost:3000`. PostgreSQL runs locally on port `5433`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+To restore the existing SQLite data instead of seeding an empty database:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run db:export-sqlite
+npm run db:import-sqlite
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+The export contains password hashes and user data and is excluded from Git.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment
 
-## Learn More
+Copy `.env.example` for the complete list. Production requires:
 
-To learn more about Next.js, take a look at the following resources:
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `BLOB_READ_WRITE_TOKEN`
+- `EXECUTION_API_URL`
+- `EXECUTION_API_KEY`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+The runner requires `RUNNER_API_KEY` with the same value as `EXECUTION_API_KEY`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Commands
 
-## Deploy on Vercel
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+npm run db:deploy
+npm run db:seed
+npm run admin:create
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for production setup and verification.

@@ -1,14 +1,20 @@
-// prisma/seed.js
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    // Create a sample user (you can change the details as needed)
-    const user = await prisma.user.create({
-        data: {
+    const passwordHash = await bcrypt.hash(
+        process.env.SEED_USER_PASSWORD || 'change-me-in-production',
+        Number.parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10)
+    );
+
+    const user = await prisma.user.upsert({
+        where: { email: 'sampleuser@example.com' },
+        update: {},
+        create: {
             email: 'sampleuser@example.com',
-            passwordHash: 'hashedPassword123', // You should hash the password using bcrypt in a real app
+            passwordHash,
             firstName: 'John',
             lastName: 'Doe',
             avatar: '/uploads/default.png',
@@ -17,61 +23,59 @@ async function main() {
         },
     });
 
-    // Create a few sample templates
-    await prisma.template.createMany({
-        data: [
-            {
-                title: 'Sample Python Template',
-                code: 'print("Hello, World!")',
-                explanation: 'This is a simple Python hello world template.',
-                userId: user.id,
-            },
-            {
-                title: 'Sample JavaScript Template',
-                code: 'console.log("Hello, World!")',
-                explanation: 'This is a simple JavaScript hello world template.',
-                userId: user.id,
-            },
-            {
-                title: 'Sample Java Template',
-                code: 'public class Main { public static void main(String[] args) { System.out.println("Hello, World!"); } }',
-                explanation: 'This is a simple Java hello world template.',
-                userId: user.id,
-            },
-        ],
-    });
-
-    // Create some tags and link them to templates (optional)
-    const pythonTag = await prisma.tag.create({
-        data: { name: 'Python' },
-    });
-
-    const jsTag = await prisma.tag.create({
-        data: { name: 'JavaScript' },
-    });
-
-    await prisma.template.update({
-        where: { id: 1 },
-        data: {
-            tags: {
-                connect: { id: pythonTag.id },
-            },
+    const templates = [
+        {
+            title: 'Sample Python Template',
+            language: 'python',
+            code: 'print("Hello, World!")',
+            explanation: 'This is a simple Python hello world template.',
+            tag: 'Python',
         },
-    });
-
-    await prisma.template.update({
-        where: { id: 2 },
-        data: {
-            tags: {
-                connect: { id: jsTag.id },
-            },
+        {
+            title: 'Sample JavaScript Template',
+            language: 'javascript',
+            code: 'console.log("Hello, World!")',
+            explanation: 'This is a simple JavaScript hello world template.',
+            tag: 'JavaScript',
         },
-    });
+        {
+            title: 'Sample Java Template',
+            language: 'java',
+            code: 'public class Main { public static void main(String[] args) { System.out.println("Hello, World!"); } }',
+            explanation: 'This is a simple Java hello world template.',
+            tag: 'Java',
+        },
+    ];
+
+    for (const template of templates) {
+        const existing = await prisma.template.findFirst({
+            where: { title: template.title, userId: user.id },
+        });
+
+        if (!existing) {
+            await prisma.template.create({
+                data: {
+                    title: template.title,
+                    language: template.language,
+                    code: template.code,
+                    explanation: template.explanation,
+                    userId: user.id,
+                    tags: {
+                        connectOrCreate: {
+                            where: { name: template.tag },
+                            create: { name: template.tag },
+                        },
+                    },
+                },
+            });
+        }
+    }
 }
 
 main()
-    .catch((e) => {
-        throw e;
+    .catch((error) => {
+        console.error(error);
+        process.exitCode = 1;
     })
     .finally(async () => {
         await prisma.$disconnect();

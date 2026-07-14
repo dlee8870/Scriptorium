@@ -9,8 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { email, password } = req.body as { email: string; password: string };
+  const normalizedEmail = email?.trim().toLowerCase();
 
-  if (!email || !password) {
+  if (!normalizedEmail || !password) {
     res.status(400).json({
       message: "Email and password are required.",
     });
@@ -20,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email,
+        email: normalizedEmail,
       },
     });
 

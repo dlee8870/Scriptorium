@@ -1,7 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Run the server
 npm run dev
-
-
-

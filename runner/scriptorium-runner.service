@@ -1,0 +1,20 @@
+[Unit]
+Description=Scriptorium code execution runner
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=scriptorium
+Group=scriptorium
+SupplementaryGroups=docker
+WorkingDirectory=/opt/scriptorium
+EnvironmentFile=/etc/scriptorium-runner.env
+ExecStart=/usr/bin/node runner/server.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

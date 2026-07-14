@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import prisma from '@/utils/db';
 import jwt from 'jsonwebtoken';
+import { getJwtSecret } from '@/utils/serverEnv';
 
 // Type definitions for reported posts and comments
 interface Report {
@@ -38,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
-    const SECRET_KEY = process.env.JWT_SECRET || 'development_secret';
+    const SECRET_KEY = getJwtSecret();
 
     // Decode token and extract userId
     const decodedToken = jwt.verify(token, SECRET_KEY) as { userId: number };

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Image from 'next/image';
+import { getJwtSecret } from '@/utils/serverEnv';
 
 interface BlogPost {
   id: number;
@@ -24,7 +25,7 @@ interface BlogPostsPageProps {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies.token || null;
-  const SECRET_KEY = process.env.JWT_SECRET || 'development_secret';
+  const SECRET_KEY = getJwtSecret();
   let userId = null;
 
   if (token) {

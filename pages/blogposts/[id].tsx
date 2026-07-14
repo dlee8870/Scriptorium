@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Image from 'next/image';
+import { getJwtSecret } from '@/utils/serverEnv';
 
 interface BlogPost {
   id: number;
@@ -39,18 +40,27 @@ interface BlogPostPageProps {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const token = context.req.cookies.token || null;
-  const API_URL = process.env.API_URL || 'http://localhost:3000/api';
+  const host = context.req.headers.host;
+  const forwardedProtocol = context.req.headers['x-forwarded-proto'];
+  const protocol = Array.isArray(forwardedProtocol)
+    ? forwardedProtocol[0]
+    : forwardedProtocol?.split(',')[0] || 'http';
+  const applicationUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : host
+      ? `${protocol}://${host}`
+      : null;
 
-  if (!id) {
+  if (!id || !applicationUrl) {
     return { notFound: true };
   }
 
   try {
-    const res = await fetch(`${API_URL}/blogs/${id}`, {
+    const res = await fetch(`${applicationUrl}/api/blogs/${id}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
 
-    const SECRET_KEY = process.env.JWT_SECRET || 'development_secret';
+    const SECRET_KEY = getJwtSecret();
     let userId = null;
 
     if (token) {

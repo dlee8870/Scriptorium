@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import prisma from '@/utils/db';
 import { NextApiRequest } from 'next';
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
+import { getJwtSecret } from '@/utils/serverEnv';
 
 interface DecodedToken {
   userId: number;
@@ -23,7 +22,7 @@ export async function authenticateUser(req: NextApiRequest): Promise<null | { id
     const token = getToken(req);
     if (!token) return null;
 
-    const decoded = jwt.verify(token, JWT_SECRET || "development_secret") as DecodedToken;
+    const decoded = jwt.verify(token, getJwtSecret()) as DecodedToken;
 
     const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
 

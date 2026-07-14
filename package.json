@@ -3,14 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:dev:up": "docker compose -f docker-compose.dev.yml up -d",
+    "db:dev:down": "docker compose -f docker-compose.dev.yml down",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:export-sqlite": "prisma generate --schema prisma/schema.sqlite.prisma && node scripts/export-sqlite.mjs",
+    "db:import-sqlite": "node scripts/import-sqlite.mjs",
+    "avatars:migrate": "node scripts/migrate-avatars-to-blob.mjs",
+    "admin:create": "node scripts/create-admin.mjs",
+    "runner:start": "node runner/server.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@vercel/blob": "^2.6.1",
     "bcrypt": "^6.0.0",
     "date-fns": "^4.1.0",
     "formidable": "^3.5.4",
@@ -34,7 +50,11 @@
     "postcss": "^8.5.19",
     "prisma": "^5.22.0",
     "tailwindcss": "^3.4.19",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "overrides": {
     "postcss": "$postcss"
