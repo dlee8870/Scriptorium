@@ -77,7 +77,7 @@ try {
         `SELECT setval(pg_get_serial_sequence('"${table}"', 'id'), COALESCE(MAX(id), 1), MAX(id) IS NOT NULL) FROM "${table}"`
       );
     }
-  });
+  }, { maxWait: 10_000, timeout: 120_000 });
 
   console.log(`Imported SQLite data from ${inputPath}`);
 } finally {
