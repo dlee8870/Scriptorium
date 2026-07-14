@@ -1,13 +1,13 @@
 {
-  "python": { "image": "sandbox-python:3.10", "fileName": "sandbox.py", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5" },
-  "javascript": { "image": "sandbox-node:18", "fileName": "sandbox.js", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5" },
-  "java": { "image": "sandbox-java:17", "fileName": "Main.java", "timeoutMs": 15000, "memory": "256m", "cpus": "1" },
-  "kotlin": { "image": "sandbox-kotlin:2.0", "fileName": "Main.kt", "timeoutMs": 30000, "memory": "512m", "cpus": "1" },
-  "c": { "image": "sandbox-c:latest", "fileName": "sandbox.c", "timeoutMs": 15000, "memory": "256m", "cpus": "1" },
-  "cpp": { "image": "sandbox-cpp:latest", "fileName": "sandbox.cpp", "timeoutMs": 15000, "memory": "256m", "cpus": "1" },
-  "go": { "image": "sandbox-go:1.20", "fileName": "sandbox.go", "timeoutMs": 30000, "memory": "256m", "cpus": "1" },
-  "ruby": { "image": "sandbox-ruby:3.2", "fileName": "sandbox.rb", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5" },
-  "php": { "image": "sandbox-php:8.2", "fileName": "sandbox.php", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5" },
-  "rust": { "image": "sandbox-rust:1.73", "fileName": "sandbox.rs", "timeoutMs": 15000, "memory": "256m", "cpus": "1" },
-  "dart": { "image": "sandbox-dart:stable", "fileName": "sandbox.dart", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5" }
+  "python": { "image": "sandbox-python:3.10", "fileName": "sandbox.py", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5", "judge0LanguageId": 109 },
+  "javascript": { "image": "sandbox-node:18", "fileName": "sandbox.js", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5", "judge0LanguageId": 102 },
+  "java": { "image": "sandbox-java:17", "fileName": "Main.java", "timeoutMs": 15000, "memory": "256m", "cpus": "1", "judge0LanguageId": 91 },
+  "kotlin": { "image": "sandbox-kotlin:2.0", "fileName": "Main.kt", "timeoutMs": 30000, "memory": "512m", "cpus": "1", "judge0LanguageId": 111 },
+  "c": { "image": "sandbox-c:latest", "fileName": "sandbox.c", "timeoutMs": 15000, "memory": "256m", "cpus": "1", "judge0LanguageId": 103 },
+  "cpp": { "image": "sandbox-cpp:latest", "fileName": "sandbox.cpp", "timeoutMs": 15000, "memory": "256m", "cpus": "1", "judge0LanguageId": 105 },
+  "go": { "image": "sandbox-go:1.20", "fileName": "sandbox.go", "timeoutMs": 30000, "memory": "256m", "cpus": "1", "judge0LanguageId": 107 },
+  "ruby": { "image": "sandbox-ruby:3.2", "fileName": "sandbox.rb", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5", "judge0LanguageId": 72 },
+  "php": { "image": "sandbox-php:8.2", "fileName": "sandbox.php", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5", "judge0LanguageId": 98 },
+  "rust": { "image": "sandbox-rust:1.73", "fileName": "sandbox.rs", "timeoutMs": 15000, "memory": "256m", "cpus": "1", "judge0LanguageId": 108 },
+  "dart": { "image": "sandbox-dart:stable", "fileName": "sandbox.dart", "timeoutMs": 5000, "memory": "128m", "cpus": "0.5", "judge0LanguageId": 90 }
 }

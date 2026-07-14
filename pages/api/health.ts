@@ -12,7 +12,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({
       status: 'ok',
       database: 'connected',
-      executionService: process.env.EXECUTION_API_URL ? 'configured' : 'local',
+      executionService: process.env.EXECUTION_PROVIDER === 'judge0'
+        ? 'judge0'
+        : process.env.EXECUTION_API_URL
+          ? 'remote-runner'
+          : 'local',
     });
   } catch (error) {
     console.error('Health check failed:', error);

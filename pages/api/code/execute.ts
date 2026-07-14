@@ -15,6 +15,7 @@ interface RuntimeProfile {
   timeoutMs: number;
   memory: string;
   cpus: string;
+  judge0LanguageId: number;
 }
 
 const runtimes = runtimeConfig as Record<string, RuntimeProfile>;
@@ -44,15 +45,76 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const output = process.env.EXECUTION_API_URL
-      ? await runRemotely(language, code, stdin, runtime.timeoutMs)
-      : await runLocally(code, stdin, runtime);
+    const provider = process.env.EXECUTION_PROVIDER?.trim().toLowerCase();
+    const output = provider === 'judge0'
+      ? await runWithJudge0(code, stdin, runtime)
+      : process.env.EXECUTION_API_URL
+        ? await runRemotely(language, code, stdin, runtime.timeoutMs)
+        : await runLocally(code, stdin, runtime);
     return res.status(200).json({ output: output || 'No output' });
   } catch (error: unknown) {
     const executionError = error as { status?: number; message?: string };
     return res.status(executionError.status || 500).json({
       error: executionError.message || 'Execution failed',
     });
+  }
+}
+
+interface Judge0Response {
+  stdout?: string | null;
+  stderr?: string | null;
+  compile_output?: string | null;
+  message?: string | null;
+  status?: { id: number; description: string };
+}
+
+async function runWithJudge0(code: string, stdin: string, runtime: RuntimeProfile): Promise<string> {
+  const baseUrl = new URL(process.env.JUDGE0_API_URL || 'https://ce.judge0.com');
+  if (baseUrl.protocol !== 'https:') {
+    throw { status: 503, message: 'Judge0 must use HTTPS.' };
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), Math.max(runtime.timeoutMs, 15000) + 5000);
+
+  try {
+    const response = await fetch(new URL('/submissions?base64_encoded=false&wait=true', baseUrl), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        language_id: runtime.judge0LanguageId,
+        source_code: code,
+        stdin,
+      }),
+      signal: controller.signal,
+    });
+    const data = (await response.json().catch(() => null)) as Judge0Response | null;
+
+    if (!response.ok || !data) {
+      throw { status: response.status || 502, message: data?.message || 'Judge0 rejected the request.' };
+    }
+
+    const output = [data.compile_output, data.stdout, data.stderr, data.message]
+      .filter((value): value is string => Boolean(value))
+      .join('\n')
+      .trim();
+
+    if (Buffer.byteLength(output) > MAX_OUTPUT_BYTES) {
+      throw { status: 413, message: 'Program output exceeded the 1 MB limit.' };
+    }
+    if (data.status?.id === 3) return output;
+    if (data.status?.id === 5) throw { status: 408, message: output || 'Execution timed out.' };
+    if (!data.status || data.status.id <= 2 || data.status.id >= 13) {
+      throw { status: 502, message: output || 'Judge0 could not complete the execution.' };
+    }
+    throw { status: 422, message: output || data.status.description };
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw { status: 408, message: 'Execution timed out.' };
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 

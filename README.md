@@ -7,7 +7,7 @@ Scriptorium is a Next.js application for writing, executing, saving, and discuss
 - Next.js Pages Router on Vercel
 - Prisma with PostgreSQL through a Vercel Marketplace provider such as Neon
 - Vercel Blob for user avatars
-- A separate authenticated runner service for Docker code execution
+- Judge0 CE for free hosted code execution, with an optional self-hosted runner
 - Local Docker execution when `EXECUTION_API_URL` is not set
 
 ## Local development
@@ -42,10 +42,10 @@ Copy `.env.example` for the complete list. Production requires:
 - `DATABASE_URL`
 - `JWT_SECRET`
 - `BLOB_READ_WRITE_TOKEN`
-- `EXECUTION_API_URL`
-- `EXECUTION_API_KEY`
+- `EXECUTION_PROVIDER=judge0`
+- `JUDGE0_API_URL=https://ce.judge0.com`
 
-The runner requires `RUNNER_API_KEY` with the same value as `EXECUTION_API_KEY`.
+The optional self-hosted runner requires `RUNNER_API_KEY` with the same value as `EXECUTION_API_KEY`.
 
 ## Commands
 

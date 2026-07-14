@@ -1,10 +1,10 @@
 # Production deployment
 
-The production system has four independent resources: Vercel, PostgreSQL, Blob storage, and the code runner.
+The free production system uses Vercel, PostgreSQL, Blob storage, and the public Judge0 CE API. A self-hosted runner is optional.
 
-## 1. Deploy the runner
+## Optional: deploy your own runner
 
-Provision a small Linux VM with a public hostname. Install Node.js 20+, Docker Engine, Git, and Caddy. Keep TCP port `4000` private; only ports `80` and `443` should be public.
+Skip this section when using Judge0. To replace the free public API later, provision a Linux VM with a public hostname. Install Node.js 20+, Docker Engine, Git, and Caddy. Keep TCP port `4000` private; only ports `80` and `443` should be public.
 
 Clone the repository into `/opt/scriptorium`, then build the language images:
 
@@ -73,9 +73,11 @@ JWT_EXPIRES_IN=1h
 BCRYPT_SALT_ROUNDS=10
 EXECUTION_API_URL=https://runner.example.com
 EXECUTION_API_KEY=the-runner-secret
+EXECUTION_PROVIDER=judge0
+JUDGE0_API_URL=https://ce.judge0.com
 ```
 
-Do not reuse `JWT_SECRET` as the runner secret. The `vercel-build` script generates Prisma Client, applies committed migrations, and builds Next.js.
+For the free deployment, set `EXECUTION_PROVIDER=judge0` and omit both runner variables. Do not reuse `JWT_SECRET` as a runner secret if you self-host later. The `vercel-build` script generates Prisma Client, applies committed migrations, and builds Next.js.
 
 ## 4. Import existing data
 
@@ -107,7 +109,7 @@ Check these workflows after deployment:
 3. Avatar upload survives a new deployment.
 4. Templates can be created, searched, opened, forked, and deleted.
 5. Blog posts, comments, votes, reports, and moderation work.
-6. Every supported language executes through the remote runner.
-7. Runner requests without the API key return `401`.
+6. Every supported language executes through Judge0.
+7. If using the optional runner, requests without the API key return `401`.
 
 Never expose the Docker socket, runner key, database URL, Blob token, or JWT secret in the browser or repository.
