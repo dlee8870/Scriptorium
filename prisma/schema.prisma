@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   // Store hashed passwords
+  firstName    String
+  lastName     String
+  avatar       String   @default("/uploads/default.png") // Default avatar
+  phoneNumber  String?  // Optional phone number
+  role         String   @default("USER")  // Default to regular USER role
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  templates    Template[]
+  blogPosts    BlogPost[]
+  comments     Comment[]
+  reports      Report[]
+  votes        Vote[]
+}
+
+model Template {
+  id          Int      @id @default(autoincrement())
+  title       String
+  code        String
+  language    String?
+  explanation String?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  blogPosts   BlogPost[]
+  tags        Tag[] @relation("TemplateTags")
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  templates Template[] @relation("TemplateTags")
+  blogPosts BlogPost[] @relation("BlogPostTags")
+}
+
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  templates   Template[]
+  comments    Comment[]
+  reports     Report[]
+  hidden      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  tags        Tag[] @relation("BlogPostTags")
+  upvotes     Int       @default(0)
+  downvotes   Int       @default(0)
+  votes       Vote[]
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  blogPostId Int
+  parentId   Int?
+  reports    Report[]
+  hidden     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  upvotes    Int      @default(0)
+  downvotes  Int      @default(0)
+  votes      Vote[]
+}
+
+model Report {
+  id         Int      @id @default(autoincrement())
+  reason     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  blogPostId Int?
+  comment    Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId  Int?
+  createdAt  DateTime @default(now())
+}
+
+model Vote {
+  id         Int      @id @default(autoincrement())
+  type       String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  blogPostId Int?
+  comment    Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId  Int?
+  createdAt  DateTime  @default(now())
+
+  @@unique([userId, blogPostId, commentId])
+}
