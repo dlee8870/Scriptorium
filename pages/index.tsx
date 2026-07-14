@@ -85,7 +85,7 @@ export default function LandingPage({ firstname, lastname, token, role }: Landin
       <section className="grid items-center gap-8 py-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <p className="mb-3 text-sm font-bold uppercase tracking-[0.22em] text-blue-300">
-            CSC309 Scriptorium
+            Collaborative code workspace
           </p>
           <h1 className="max-w-3xl text-5xl font-black tracking-tight text-white md:text-6xl">
             Code, document, and share examples in one workspace.

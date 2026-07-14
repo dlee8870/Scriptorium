@@ -1,10 +1,9 @@
 {
 	"info": {
 		"_postman_id": "91f9ccb1-62e0-48cd-b5ab-ebe5f6ebd31d",
-		"name": "CSC309 Project",
+		"name": "Scriptorium API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "39463064",
-		"_collection_link": "https://csc309-project-7364.postman.co/workspace/CSC309-Project-Workspace~d71def06-ef00-466a-8c02-ca48807fe4c2/collection/39348646-91f9ccb1-62e0-48cd-b5ab-ebe5f6ebd31d?action=share&source=collection_link&creator=39463064"
+		"_exporter_id": "39463064"
 	},
 	"item": [
 		{
@@ -14,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{   \n    \"firstName\": \"csc\",\n    \"lastName\": \"309\",\n    \"email\": \"name@csc309.com\",\n    \"password\": \"password\"\n}\n",
+					"raw": "{   \n    \"firstName\": \"Alex\",\n    \"lastName\": \"Morgan\",\n    \"email\": \"developer@example.com\",\n    \"password\": \"password\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -35,7 +34,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "GET",
@@ -59,7 +58,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "PUT",
@@ -84,7 +83,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"name@csc309.com\",\n    \"password\": \"password\"\n}\n",
+					"raw": "{\n    \"email\": \"developer@example.com\",\n    \"password\": \"password\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -296,7 +295,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -635,7 +634,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzYyNzc2LCJleHAiOjE3MzA3NjYzNzZ9.YbuXKduH0_eq8vD8W2vM77xThexQTI4zcOYAgFomrtk"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -762,7 +761,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -871,7 +870,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNjkxNDc3LCJleHAiOjE3MzA2OTUwNzd9.GrmuzpV6EfSQl6ir17YbCMQoNyYXAZVScPGl5WTDrWg"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "GET",
@@ -895,7 +894,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "PUT",
@@ -919,7 +918,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "DELETE",
@@ -934,7 +933,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNjg2OTAxLCJleHAiOjE3MzA2OTA1MDF9.EKaBkZcQezzNuRGdsIxEzuu51U-i8QKiLtdJhwOkais"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -949,7 +948,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNjg2OTAxLCJleHAiOjE3MzA2OTA1MDF9.EKaBkZcQezzNuRGdsIxEzuu51U-i8QKiLtdJhwOkais"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -973,7 +972,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3MzA2ODg2OTUsImV4cCI6MTczMDY5MjI5NX0.g-UpP1Z1S0I5CR2Tg6YjlvyBpHZOKJxv62sDff4OHTo"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "GET",
@@ -988,7 +987,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3MzA2ODg2OTUsImV4cCI6MTczMDY5MjI5NX0.g-UpP1Z1S0I5CR2Tg6YjlvyBpHZOKJxv62sDff4OHTo"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "PATCH",
@@ -1012,7 +1011,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzYyNzc2LCJleHAiOjE3MzA3NjYzNzZ9.YbuXKduH0_eq8vD8W2vM77xThexQTI4zcOYAgFomrtk"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -1036,7 +1035,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzU5MDk3LCJleHAiOjE3MzA3NjI2OTd9.ZA1zzFVVtWc0rQ_vE2X40PmQl0osLmmMO9O6OIFsXco"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "POST",
@@ -1077,7 +1076,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoibmFtZUBjc2MzMDkuY29tIiwiaWF0IjoxNzMwNzYyNzc2LCJleHAiOjE3MzA3NjYzNzZ9.YbuXKduH0_eq8vD8W2vM77xThexQTI4zcOYAgFomrtk"
+						"token": "{{authToken}}"
 					}
 				},
 				"method": "DELETE",
